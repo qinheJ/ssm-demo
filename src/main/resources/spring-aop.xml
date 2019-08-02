@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--spring-aop的示例-->
+
+    <!--创建目标bean-->
+    <bean id="user" class="com.my.aop.User">
+        <property name="name" value="abc"/>
+    </bean>
+
+    <!--创建切面bean-->
+    <bean id="myAspectForUser" class="com.my.aop.MyAspectForUser"/>
+
+    <!-- 进行 aop的配置 -->
+    <aop:config>
+        <!--配置切入点表达式:哪些类的哪些方法需要增强-->
+        <aop:pointcut expression="execution(* com.my.aop.User.*(..))" id="pointcut1"/>
+        <!--配置切面-->
+        <aop:aspect ref="myAspectForUser"><!-- ref 为切面或者通知bean-->
+            <aop:before method="before" pointcut-ref="pointcut1"/><!--将通知myAspectForUser织入切点pointcut1-->
+        </aop:aspect>
+    </aop:config>
+
+    <!--下面用aop的注解-->
+    <!--开启aop注解的自动代理-->
+    <aop:aspectj-autoproxy/>
+
+
+</beans>

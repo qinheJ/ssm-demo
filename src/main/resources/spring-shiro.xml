@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="realm" class="com.my.shiro.Realm"/>
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="realm"/>
+    </bean>
+
+    <!--自定义授权过滤器-->
+    <bean id="shiroPermsFilter" class="com.my.shiro.ShiroPermsFilter"/>
+
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean" depends-on="shiroPermsFilter">
+        <!--安全验证器-->
+        <property name="securityManager" ref="securityManager"/>
+        <!--认证相关配置：当用户没有登录就访问必须登录才可以访问的资源时，跳转到此页面-->
+        <property name="loginUrl" value="/login.jsp"/>
+        <!--授权相关配置：当用户访问没有权限的资源时，跳转到此页面-->
+        <property name="unauthorizedUrl" value="/error403.jsp"/>
+        <!--过滤器链的配置：用来配置页面的访问规则-->
+        <property name="filterChainDefinitionMap">
+            <!--            <value>-->
+            <!--                aa=aa-->
+            <!--            </value>-->
+            <map>
+                <!--未认证可访问的资源-->
+                <entry key="/error403.jsp" value="anon"/>
+                <entry key="/user/login.htm" value="anon"/>
+                <entry key="/login.jsp" value="anon"/>
+
+                <!--已认证才可访问的资源-->
+                <entry key="/*.jsp" value="authc"/>
+                <entry key="/*.htm" value="authc"/>
+                <entry key="/*" value="authc"/>
+
+                <!--已授权才可访问的资源-->
+                <entry key="/views/shiro_test/bigVip.jsp" value="perms[bigVip]"/>
+                <entry key="/views/shiro_test/smallVip.jsp" value="perms[smallVip,bigVip]"/>
+                <entry key="/user/showName.htm" value="perms[showName]"/>
+
+            </map>
+        </property>
+
+        <!--添加各种验证过滤器-->
+        <property name="filters">
+            <map>
+                <entry key="perms" value-ref="shiroPermsFilter"/>
+            </map>
+        </property>
+    </bean>
+
+
+    <!--以下全是开启shiro注解的配置-->
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+          depends-on="lifecycleBeanPostProcessor">
+        <!--默认使用JDK代理,如果代理类没有实现接口,必须使用下面配置开启cglib代理-->
+        <property name="proxyTargetClass" value="true"/>
+    </bean>
+
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <!--对安全管理器增强代码,spring后置处理器-->
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+    <!--注解演示见orderService中getList方法-->
+</beans>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.my.dao.OrderRecordDao">
+    <resultMap id="OrderRecordResultMap" type="OrderRecord">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+    </resultMap>
+    <select id="get" parameterType="long" resultMap="OrderRecordResultMap">
+        select *
+        from order_record
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="getList" resultType="OrderRecord">
+        select id
+        from order_record
+    </select>
+</mapper>
