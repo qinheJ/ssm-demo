@@ -29,7 +29,7 @@
         <!-- redis客户端 -->
         <jedis.version>2.7.2</jedis.version>
         <!-- quartz时间任务 -->
-        <quartz.version>2.2.2</quartz.version>
+        <quartz.version>2.3.2</quartz.version>
         <!-- 单元测试 -->
         <junit.version>4.12</junit.version>
         <!-- dubbo -->
