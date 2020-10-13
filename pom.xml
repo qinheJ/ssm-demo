@@ -31,7 +31,7 @@
         <!-- quartz时间任务 -->
         <quartz.version>2.2.2</quartz.version>
         <!-- 单元测试 -->
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <!-- dubbo -->
         <dubbo.version>2.6.7</dubbo.version>
         <zookeeper.version>3.5.5</zookeeper.version>
