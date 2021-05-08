@@ -37,7 +37,7 @@
         <zookeeper.version>3.5.5</zookeeper.version>
         <zkclient.version>0.1</zkclient.version>
         <!--shiro-->
-        <shiro.version>1.4.0</shiro.version>
+        <shiro.version>1.6.0</shiro.version>
     </properties>
 
     <dependencies>
